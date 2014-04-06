@@ -1,0 +1,199 @@
+body {
+	/*background-color: #78b0f0;*/
+	background-image:url("sky-half.png");
+	background-repeat: repeat-x;
+	margin: 0;
+	font-family: "Open Sans", "Helvetica Neue", 
+}
+
+#content {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: absolute;
+	z-index: 1;
+}
+
+#modal-container {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: absolute;
+	z-index: 1;
+}
+
+
+.hidden-popup {
+    display: none;
+}
+
+#popup-container {
+    margin: 100 auto 100 auto;
+    width: 500px;
+    position: fixed;
+    z-index: 20;
+    background-color: white;
+}
+
+.check-button-wrap {
+    height: 100%;
+    float: left;
+}
+
+.habit-entry-wrap {
+    height: 100px;
+}
+
+#invis-click-panel {
+    display: none;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    /*
+    top: -100%;
+    width: 4000;
+    height: 4000;
+    */
+    position: fixed;
+    z-index: 19;
+    top: 0;
+}
+
+
+
+canvas {
+	width: 100%;
+	height: 100%;
+	right: 0;
+	/*top: 50%;
+	bottom: 50%;*/
+/*z-index: 5;*/
+	overflow: hidden;
+	margin: -250px 0 0 -250px;
+	position: absolute;
+}
+
+.canvas {
+	position: absolute;
+	z-index: 4;
+	right: 0;
+}
+
+.canvas1 {
+	position: absolute;
+	z-index: 3;
+	right: 0;
+}
+
+}
+.canvas2 {
+	position: absolute;
+	z-index: 2;
+	right: 0;
+}
+
+
+#landing-container {
+	z-index: 10;
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100%;
+	margin: 10% auto 0 auto;
+	
+}
+
+#logo-container{
+	margin-left: auto;
+	margin-right: auto;
+	width: 472px;
+}
+
+#loginsignup-container{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	width:400px;
+	font-family: "Maven Pro", "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	color: #081e4c;
+	opacity: 0.9;
+}
+
+#loginsignup {
+	width: 315px;
+	height: 200px;
+	padding: 30px;
+	border-radius: 10px;
+	background-color: #F4F5FF;	
+}
+
+#signup {
+	padding: 10px;
+	/*margin-left: 20px;*/
+	margin-top: 30px;
+	height: 120px;
+	width: 125px;
+	float:left;
+}
+
+
+#login {
+	padding: 10px;
+	margin-top:30px;
+	float: left;
+	height: 120px;
+	width: 175px;
+	margin-left: 65px;
+}
+
+input[name=username], input[name=password] {
+	border-radius: 3px;
+	background: white;
+	height: 20px;
+	font-size: 15px;
+	border: 0px;
+}
+
+input[name=login-button] {
+	text-decoration: none;
+	cursor: pointer;
+	outline: none;
+	--webkit-box-shadow: none;
+	box-shadow: none;
+	border: 0px;
+	background: #ffcb92;
+	padding: 7.5px 12px 7.5px 12px;
+	margin-top: 10px;
+	font-size: 15px;
+	float: left;
+	width: 78px;
+	margin-right: 10px;
+	border-radius: 5px;
+}
+
+input[name=register-button] {
+	float: left;
+	text-decoration: none;
+	cursor: pointer;
+	outline: none;
+	--webkit-box-shadow: none;
+	box-shadow: none;
+	width: 78px;
+	border: 0px;
+	background: #ffcb92;
+	padding: 7.5px 12px 7.5px 12px;
+	margin-top: 10px;
+	font-size: 15px;
+	border-radius: 5px;
+	
+}
+
