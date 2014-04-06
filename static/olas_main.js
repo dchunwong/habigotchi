@@ -3,6 +3,8 @@
 // takes in the container div
 // creates and puts the login popup in container
 
+
+
 var user;
 var habits;
 
@@ -74,7 +76,7 @@ var submitButton = function(container, classname) {
         var jsonResponse = sendRequest("POST", "/", jsonlist);
         //console.log(jsonResponse)
         if (jsonResponse.success == true) {
-            killPopup('content', container);
+            killPopup('invis-click-panel', container);
         } else {
             $("." + classname).each(function() {
                 $(this).val('');
@@ -225,13 +227,14 @@ $(document).ready(function() {
 // essentially the main method for THE HABITLIST POPUP; it runs everything.
 // when you need to bind all this into a button, just rip this function
 // out of the $().ready and bind it to a button or something.
-$(document).ready(function() {
+/*$(document).ready(function() {
+    console.log("fucking work please");
     var popCont = document.getElementById('popup-container');
 
     // GET HABITLIST (LIST OF OBJECTS) 
 
     //var habitList = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
-    //var habits = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
+    var habits = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
     var content = document.getElementById('content');
     var killerInvis = document.createElement('div');
     content.appendChild(killerInvis);
@@ -244,4 +247,50 @@ $(document).ready(function() {
     //$('#content').delay(800).fadeIn(400);
     $('#invis-click-panel').delay(800).fadeIn(400);
     $('.hidden-popup').delay(800).fadeIn(400);
+});*/
+
+/*$("input[name='register-button']").click(function() {*/
+
+/*$("#logo-container").click(function() {
+
+    var popCont = document.getElementById('popup-container');
+    console.log("meowmeow");
+
+    // GET HABITLIST (LIST OF OBJECTS) 
+
+    //var habitList = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
+    var habits = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
+    var content = document.getElementById('content');
+    var killerInvis = document.createElement('div');
+    content.appendChild(killerInvis);
+    popCont.appendChild(HabitListPopup(popCont, habits));
+    //content.appendChild(killerInvis);
+    killerInvis.id = 'invis-click-panel';
+    //killerInvis.style.display='none';
+    //killerInvis.style.background='rgba(0, 0, 0, 0.5)';
+    killerInvis.onclick = function() { killPopup(content.id, popCont.id); };
+    //$('#content').delay(800).fadeIn(400);
+    $('#invis-click-panel').delay(800).fadeIn(400);
+    $('.hidden-popup').delay(800).fadeIn(400);
+});*/
+
+window.onload = function(){
+
+$("#logo-container").click(function() {
+    var popCont = document.getElementById('popup-container');
+    popCont.appendChild(LoginPopup(popCont));
+    var container = document.getElementById('modal-container');
+    var killerInvis = document.createElement('div');
+    console.log(killerInvis);
+    console.log(container);
+    container.appendChild(killerInvis);
+    killerInvis.id = 'invis-click-panel';
+    killerInvis.onclick = function() { killPopup(container.id, popCont.id); };
+    //content.style.display='none';
+    //content.style.background='rgba(0, 0, 0, 0.5)';
+    $('#invis-click-panel').delay(800).fadeIn(400);
+    $('.hidden-popup').delay(800).fadeIn(400);
 });
+
+};
+

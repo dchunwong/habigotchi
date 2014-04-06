@@ -1,25 +1,16 @@
 canvas = document.getElementById("canvas");
-canvasmid = document.getElementById("canvas1");
-canvasback = document.getElementById("canvas2");
-canvas.height = window.outerHeight;
-canvas.width = window.outerWidth;
-canvasmid.height = window.innerHeight;
-canvasmid.width = window.innerWidth;
-canvasback.height = window.innerHeight;
-canvasback.width = window.innerWidth;
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
 
 ctx = canvas.getContext("2d");
-ctxMid = canvasmid.getContext("2d");
-ctxBack = canvasback.getContext("2d");
 ctx.strokeStyle = "#EAEDD5";
 var game, updateInterval, squares;
 const 
       directions = {38: "N", 40: "S", 39: "E", 37: "W"},
-      /*spdfct = 10;*/
 	  spdfct = 0.9;
 var direction = "E";
 
-/*var cloud0 = new Image();
+var cloud0 = new Image();
 cloud0.src = "assets/cloud0.png";
 
 var cloud1 = new Image();
@@ -29,10 +20,10 @@ var cloud2 = new Image();
 cloud2.src = "assets/cloud2.png";
 
 var cloud3 = new Image();
-cloud3.src = "assets/cloud3.png";*/
+cloud3.src = "assets/cloud3.png";
 
 
-var cloud0fore = new Image();
+/*var cloud0fore = new Image();
 cloud0fore.src = "assets/cloud0-fore.png";
 
 var cloud1fore = new Image();
@@ -71,9 +62,9 @@ cloud3back.src = "assets/cloud3-back.png";
 
 var cloudsListFore = [cloud0fore, cloud1fore, cloud2fore, cloud3fore];
 var cloudsListMid = [cloud0mid, cloud1mid, cloud2mid, cloud3mid];
-var cloudsListBack = [cloud0back, cloud1back, cloud2back, cloud3back];
+var cloudsListBack = [cloud0back, cloud1back, cloud2back, cloud3back];*/
 
-/*var cloudsList = [cloud0, cloud1, cloud2, cloud3];*/
+var cloudsList = [cloud0, cloud1, cloud2, cloud3];
 
 
 /* min and max inclusive */
@@ -84,10 +75,11 @@ function getRandomInt(min, max) {
 
 function cloud(height, x, y, speed) {
 	var randInt = getRandomInt(0,3);
-	this.image = cloudsListFore[randInt];
+	/*this.image = cloudsListFore[randInt];*/
+	this.image = cloudsList[randInt]
 	this.height = height;
 	if(!x){
-        this.x = Math.round(Math.random()*canvas.width)
+        this.x = 0
     }else{
         this.x = x;
     }
@@ -106,7 +98,7 @@ function cloud(height, x, y, speed) {
 	}
 }
 
-function cloudMid(height, x, y, speed) {
+/*function cloudMid(height, x, y, speed) {
 	var randInt = getRandomInt(0,3);
 	this.image = cloudsListMid[randInt];
 	this.height = height;
@@ -152,7 +144,7 @@ function cloudBack(height, x, y, speed) {
 	this.move = function() {
 		this.x += this.speed;
 	}
-}
+}*/
 
 
 function Game(){
@@ -163,12 +155,12 @@ function Game(){
     this.addCloudFore = function(h, x, y, s){
         this.clouds.push(new cloud(h, x, y, s));
     };
-    this.addCloudMid = function(h, x, y, s){
+    /*this.addCloudMid = function(h, x, y, s){
         this.cloudsMid.push(new cloudMid(h, x, y, s));
     };
     this.addCloudBack = function(h, x, y, s){
         this.cloudsBack.push(new cloudBack(h, x, y, s));
-    };
+    };*/
 
     this.update = function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -176,7 +168,7 @@ function Game(){
             curr = this.clouds[i];
             ctx.drawImage(curr.image, curr.x, curr.y);
 		}
-        ctxMid.clearRect(0, 0, canvasmid.width, canvasmid.height);
+        /*ctxMid.clearRect(0, 0, canvasmid.width, canvasmid.height);
         for(var i = 0; i < this.cloudsMid.length; i++){
             curr = this.cloudsMid[i];
             ctxMid.drawImage(curr.image, curr.x, curr.y);
@@ -185,7 +177,7 @@ function Game(){
         for(var i = 0; i < this.cloudsBack.length; i++){
             curr = this.cloudsBack[i];
             ctxBack.drawImage(curr.image, curr.x, curr.y);
-        }
+        }*/
     };
    this.move = function(direction){
         for(var j = 0; j < this.clouds.length; j++){
@@ -195,7 +187,7 @@ function Game(){
                 continue;
             }
         }
-        for(var j = 0; j < this.cloudsMid.length; j++){
+        /*for(var j = 0; j < this.cloudsMid.length; j++){
             this.cloudsMid[j].move(direction);
             if(this.cloudsMid[j].x > canvasmid.width){
                 this.cloudsMid.splice(this.cloudsMid.indexOf(this.cloudsMid[j]), 1);
@@ -208,7 +200,7 @@ function Game(){
                 this.cloudsBack.splice(this.cloudsBack.indexOf(this.cloudsBack[j]), 1);
                 continue;
             }
-        }
+        }*/
 
 
     }
@@ -228,11 +220,11 @@ function animate(){
 function cloudGen(){
     s = Math.round(Math.random()*spdfct+1);
     side = sideCalc(s);
-    game.addCloudFore(side, -400, undefined, s);
+    game.addCloudFore(side, -200, undefined, s);
     setTimeout(cloudGen, 3000);
 }
 
-function cloudGenMid(){
+/*function cloudGenMid(){
     s = Math.round(Math.random()*spdfct+1);
     side = sideCalc(s);
     game.addCloudMid(side, -200, undefined, s);
@@ -244,22 +236,22 @@ function cloudGenBack(){
     side = sideCalc(s);
     game.addCloudBack(side, -200, undefined, s);
     setTimeout(cloudGenBack, 2000);
-}
+}*/
 
 
 
 window.onresize = function(){
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
-    canvasmid.height = window.innerHeight;
+/*    canvasmid.height = window.innerHeight;
     canvasmid.width = window.innerWidth;
     canvasback.height = window.innerHeight;
-    canvasback.width = window.innerWidth;
+    canvasback.width = window.innerWidth;*/
 
     if(game){
         ctx.strokeStyle = "#EAEDD5";
-        ctxMid.strokeStyle = "#EAEDD5";
-        ctxBack.strokeStyle = "#EAEDD5";
+        /*ctxMid.strokeStyle = "#EAEDD5";
+        ctxBack.strokeStyle = "#EAEDD5";*/
 
         game.update();
     }
@@ -267,5 +259,6 @@ window.onresize = function(){
 
 animate();
 cloudGen();
-cloudGenMid();
-cloudGenBack();
+/*cloudGenMid();
+cloudGenBack();*/
+
