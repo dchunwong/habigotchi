@@ -155,13 +155,22 @@ canvas {
 	margin-left: 65px;
 }
 
-input[name=login] {
+input[name=username] {
 	border-radius: 3px;
 	background: white;
 	height: 20px;
 	font-size: 15px;
 	border: 0px;
 }
+
+input[name=password] {
+	border-radius: 3px;
+	background: white;
+	height: 20px;
+	font-size: 15px;
+	border: 0px;
+}
+
 
 input[name=login-button] {
 	text-decoration: none;
