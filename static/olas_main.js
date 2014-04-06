@@ -72,8 +72,14 @@ var submitButton = function(container, classname) {
         /*############# SEND AJAX REQUEST HERE to give dylan data ##############*/
         
         var jsonResponse = sendRequest("POST", "/", jsonlist);
-        console.log(jsonResponse)
-        killPopup('content', container);
+        //console.log(jsonResponse)
+        if (jsonResponse.success == true) {
+            killPopup('content', container);
+        } else {
+            $("." + classname).each(function() {
+                $(this).val('');
+            });
+        }
         /*
         $('#'+container).delay(800).fadeOut(400, function() { $('#'+container).remove(); });
         $('#content').delay(800).fadeOut(400);
@@ -172,16 +178,22 @@ var submitHabit= function(container, classname, lastElem) {
                 , 'name': user.name
         };
 
-        document.getElementById(container).insertBefore(habitEntry(jsonlist), lastElem);
+        var TrialHabitEntry = habitEntry(jsonlist);
+        document.getElementById(container).insertBefore(TrialHabitEntry, lastElem);
         //console.log(jsonlist);
         /*############# SEND AJAX REQUEST HERE to give dylan data ##############*/
         
-        var jsonResponse = sendRequest('POST', '/new_habit', jsonlist);
-
-        $("." + classname).each(function() {
-            //console.log($(this).val());
-            $(this).val('');
-        });
+        var jsonResponse = sendRequest("POST", "/new_habit", jsonlist);
+        //console.log(jsonResponse)
+        if (jsonResponse.success == true) {
+            $("." + classname).each(function() {
+                //console.log($(this).val());
+                $(this).val('');
+            });
+        } else {
+            $('.habit-entry-wrap').remove();
+        }
+        
     };
     return submit;
 };
@@ -194,7 +206,6 @@ var killPopup = function(contentId, popupContainer) {
 // essentially the main method for THE LOGIN POPUP; it runs everything.
 // when you need to bind all this into a button, just rip this function
 // out of the $().ready and bind it to a button or something.
-
 $(document).ready(function() {
     var popCont = document.getElementById('popup-container');
     popCont.appendChild(LoginPopup(popCont));
@@ -203,9 +214,9 @@ $(document).ready(function() {
     content.appendChild(killerInvis);
     killerInvis.id = 'invis-click-panel';
     killerInvis.onclick = function() { killPopup(content.id, popCont.id); };
-    content.style.display='none';
-    content.style.background='rgba(0, 0, 0, 0.5)';
-    $('#content').delay(800).fadeIn(400);
+    //content.style.display='none';
+    //content.style.background='rgba(0, 0, 0, 0.5)';
+    $('#invis-click-panel').delay(800).fadeIn(400);
     $('.hidden-popup').delay(800).fadeIn(400);
 });
 
@@ -219,15 +230,17 @@ $(document).ready(function() {
     // GET HABITLIST (LIST OF OBJECTS) 
 
     var habitList = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
-    popCont.appendChild(HabitListPopup(popCont, habitList));
     var content = document.getElementById('content');
     var killerInvis = document.createElement('div');
     content.appendChild(killerInvis);
+    popCont.appendChild(HabitListPopup(popCont, habitList));
+    //content.appendChild(killerInvis);
     killerInvis.id = 'invis-click-panel';
-    content.style.display='none';
-    content.style.background='rgba(0, 0, 0, 0.5)';
+    //killerInvis.style.display='none';
+    //killerInvis.style.background='rgba(0, 0, 0, 0.5)';
     killerInvis.onclick = function() { killPopup(content.id, popCont.id); };
-    $('#content').delay(800).fadeIn(400);
+    //$('#content').delay(800).fadeIn(400);
+    $('#invis-click-panel').delay(800).fadeIn(400);
     $('.hidden-popup').delay(800).fadeIn(400);
 });
 */
