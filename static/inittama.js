@@ -41,3 +41,13 @@ function endOfMonth(tama) {
     d = new Date();
     return (d.getDate() == tama["date"]);
 }
+
+// Lose HP at the end of the day if habit not fulfilled.
+function loseHP(tama, rank) {
+    tama["hp"]["current"] -= (rank * 1.5);
+    if (tama["hp"]["current"] <= 0) {
+        tama["alive"] = False;
+    }
+}
+
+
