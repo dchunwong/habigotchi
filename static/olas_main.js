@@ -206,6 +206,7 @@ var killPopup = function(contentId, popupContainer) {
 // essentially the main method for THE LOGIN POPUP; it runs everything.
 // when you need to bind all this into a button, just rip this function
 // out of the $().ready and bind it to a button or something.
+/*
 $(document).ready(function() {
     var popCont = document.getElementById('popup-container');
     popCont.appendChild(LoginPopup(popCont));
@@ -219,21 +220,22 @@ $(document).ready(function() {
     $('#invis-click-panel').delay(800).fadeIn(400);
     $('.hidden-popup').delay(800).fadeIn(400);
 });
+*/
 
 // essentially the main method for THE HABITLIST POPUP; it runs everything.
 // when you need to bind all this into a button, just rip this function
 // out of the $().ready and bind it to a button or something.
-/*
 $(document).ready(function() {
     var popCont = document.getElementById('popup-container');
 
     // GET HABITLIST (LIST OF OBJECTS) 
 
-    var habitList = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
+    //var habitList = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
+    //var habits = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
     var content = document.getElementById('content');
     var killerInvis = document.createElement('div');
     content.appendChild(killerInvis);
-    popCont.appendChild(HabitListPopup(popCont, habitList));
+    popCont.appendChild(HabitListPopup(popCont, habits));
     //content.appendChild(killerInvis);
     killerInvis.id = 'invis-click-panel';
     //killerInvis.style.display='none';
@@ -243,4 +245,3 @@ $(document).ready(function() {
     $('#invis-click-panel').delay(800).fadeIn(400);
     $('.hidden-popup').delay(800).fadeIn(400);
 });
-*/
