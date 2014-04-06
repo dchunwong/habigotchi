@@ -1,0 +1,15 @@
+body {
+	background-color: #78b0f0;
+}
+
+#landing-container {
+	width: 500px;
+	margin: 10% auto 0 auto;
+}
+
+#loginsignup {
+	width: 400px;
+	border-radius: 10px;
+	background-color: #d6d8e5;	
+}
+
