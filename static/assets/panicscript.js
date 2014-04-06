@@ -24,6 +24,9 @@ $(document).ready( function() {
 	$('input[name=login-button] ').click(function (){ 
 		login($('input[name=username] ').val(), $('input[name=password] ').val());
 	});
+	$('input[name=register-button] ').click(function (){ 
+		sendRequest('POST', '/', {"name":$('input[name=username] ').val(),"number":1112223333,"email":"at@gmail.com", "password":$('input[name=password] ').val()});
+	});
 
 });
 

@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, abort, jsonify
 from flask.ext.pymongo import PyMongo
 from ast import literal_eval
-import hashlib
+import json
 import pymongo
+from bson.json_util import dumps
+import hashlib
 
 #end authentication
 app = Flask(__name__)
@@ -39,7 +41,7 @@ def landing():
             users.insert(user)
             return jsonify({"success": True, "message":"Sign-up successful."})
     else:
-        return render_template('signup.html')
+        return render_template('index.html')
 
 # Main Page landing.
 @app.route('/main')
@@ -78,8 +80,9 @@ def login():
     else:
         habits = mongo.db[received['name']]
         user =users.find_one({"password": m(received['name']+received['password']).hexdigest()})
-        all_habits = habits.find_all({"*":"*"})
-        return jsonify({"success": True, "user":user, "habits":all_habits})
+        all_habits = habits.find()
+        habits_list = [dumps(all_habits[i]) for i in range(all_habits.count())] 
+        return jsonify({"success": True, "user":dumps(user), "habits":habits_list})
 
 @app.route('/update', methods=["POST"])
 def update():
