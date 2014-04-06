@@ -2,6 +2,20 @@
 
 // takes in the container div
 // creates and puts the login popup in container
+
+var user;
+var habits;
+
+function sendRequest(type, url, data){
+    return JSON.parse($.ajax({
+                type: type,
+                url: url,
+                data: data,
+                async: false,
+                dataType: "json",
+            }).responseText);
+}
+
 var LoginPopup = function(container) {
     var login = document.createElement('div');
     login.id='loginPopup';
@@ -19,6 +33,14 @@ var LoginPopup = function(container) {
 
     return login;
 };
+
+function login(name, password){
+    response = sendRequest('POST','/login',{"name":name,"password":password});
+    if (response.success){
+        user = response.user;
+        habits = response.habits;
+    }
+}
 
 // all textboxes
 // @text holds placeholder text
@@ -45,12 +67,12 @@ var submitButton = function(container, classname) {
             list.push($(this).val());
         });
         //console.log(list);
-        jsonlist = {'name': list[0], 'password': list[1], 'email': list[2], 'number': list[3] };
+        jsonlist = {"name": list[0], "password": list[1], "email": list[2], "number": list[3] };
         //console.log(jsonlist);
         /*############# SEND AJAX REQUEST HERE to give dylan data ##############*/
         
         var jsonResponse = sendRequest("POST", "/", jsonlist);
-
+        console.log(jsonResponse)
         killPopup('content', container);
         /*
         $('#'+container).delay(800).fadeOut(400, function() { $('#'+container).remove(); });

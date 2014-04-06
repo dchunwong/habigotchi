@@ -24,16 +24,15 @@ def authenticate(user, pw):
 @app.route('/', methods=['GET', 'POST'])
 def landing():
     if request.method == 'POST':
-        print request
         users = mongo.db.users
-        check = users.find_one({"name":request.form['Name']})
+        check = users.find_one({"name":request.form['name']})
         if check != None:
             return jsonify({"success": False,"message":"Name taken."})
         else:
-            user = {"name": request.form['Name'], 
+            user = {"name": request.form['name'], 
             "number": request.form['number'],
             "email": request.form['email'],
-            "password":m(request.form['Name']+request.form['password']).hexdigest(),
+            "password":m(request.form['name']+request.form['password']).hexdigest(),
             "habigotchi":{}
             
             }
@@ -71,7 +70,7 @@ def finish_habit():
 
 @app.route('/login', methods= ["POST"])
 def login():
-    received = literal_eval(request.data)
+    received = request.form
     users = mongo.db.users
     auth = authenticate(received['name'], received['password'])
     if not auth:
@@ -79,8 +78,8 @@ def login():
     else:
         habits = mongo.db[received['name']]
         user =users.find_one({"password": m(received['name']+received['password']).hexdigest()})
-
-        return jsonify({"success": True, "user":user, "habits":habits})
+        all_habits = habits.find_all({"*":"*"})
+        return jsonify({"success": True, "user":user, "habits":all_habits})
 
 @app.route('/update', methods=["POST"])
 def update():
