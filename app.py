@@ -43,7 +43,7 @@ def landing():
 # Main Page landing.
 @app.route('/main')
 def tama_page():
-    return 'Hello World!'
+    return render_template('main.html')
 
 # New Habits
 @app.route('/new_habit')
