@@ -4,23 +4,45 @@
 <head>
 	<title>habigotchi!</title>
 	<link rel="stylesheet" href="assets/styles.css" type="text/css">
-	<!-- <script src = "assets/script.js"> -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,700italic,400,700,300' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Maven+Pro:500' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Englebert' rel='stylesheet' type='text/css'>
+			<!-- <script src = "assets/script.js"> -->
+
+
 
 </head>
 
 <body>
 
 	<div id = "content">
-		
+		<canvas id = "canvas2" style="overflow: hidden"></canvas>
+		<canvas id = "canvas1" style="overflow: hidden"></canvas>
+		<canvas id = "canvas" style="overflow: hidden"></canvas>
 
 		<!--landing page-->
 		<div id = "landing-container">
 
 			<div id = "logo-container">
-				<img src="assets/logo.svgz">
+				<img src="assets/logo.png">
 			</div>
 			
-			<div id = "landing-popup-container">
+			<div id = "loginsignup-container">
+				<div id = "loginsignup">
+					<!--<div id = "signup">
+						Sign Up	
+						<br><button type="button" name="signup-button" type="button">start</button>
+					</div>-->
+
+					<div id = "login">
+						Log In
+						<input name="login" placeholder ="username">
+						<input name="login" placeholder ="password">
+						<br><input name="login-button" value="sign in" type="submit">
+						<input name="register-button" value="sign up" type = "submit">
+					</div>
+				</div>
+
 			</div>
 
 
@@ -45,6 +67,7 @@
 
 	</div>
 
+	<script src = "assets/cloudsscript.js"></script>
 
 </body>
 
