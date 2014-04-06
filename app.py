@@ -9,8 +9,8 @@ app.config["MONGO_USERNAME"] = "admin"
 app.config["MONGO_PASSWORD"] = "1234"
 mongo = PyMongo(app)
 
-@app.route('/signup', methods=['GET', 'POST'])
-def submit():
+@app.route('/', methods=['GET', 'POST'])
+def landing():
     if request.method == 'POST':
         user = {"Name": request.form['Name'], 
         "number": request.form['number'], "email": request.form['email']}
@@ -19,9 +19,11 @@ def submit():
         return redirect('/')
     else:
         return render_template('signup.html')
+"""
 @app.route('/')
 def landing():
     return 'Hello World!'
+"""
 
 # Main Page landing.
 @app.route('/main')
