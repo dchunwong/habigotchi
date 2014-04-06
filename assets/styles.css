@@ -1,5 +1,7 @@
 body {
-	background-color: #78b0f0;
+	/*background-color: #78b0f0;*/
+	background-image:url("sky-half.png");
+	background-repeat: repeat-x;
 	margin: 0;
 	font-family: "Open Sans", "Helvetica Neue", 
 }
