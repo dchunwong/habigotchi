@@ -33,7 +33,9 @@ def landing():
             user = {"name": request.form['Name'], 
             "number": request.form['number'],
             "email": request.form['email'],
-            "password":m(request.form['Name']+request.form['password']).hexdigest()
+            "password":m(request.form['Name']+request.form['password']).hexdigest(),
+            "habigotchi":{}
+            
             }
             users.insert(user)
             return jsonify({"success": True, "message":"Sign-up successful."})
@@ -48,12 +50,13 @@ def tama_page():
 # New Habits
 @app.route('/new_habit')
 def add_habit():
-    habits = mongo.db[request.form['name']]
-    check = habits.find_one({"habit":request.form["habit"]})
+    received = literal_eval(request.data)
+    habits = mongo.db[received['name']]
+    check = habits.find_one({"habit":received["habit"]})
     if check != None:
         return jsonify({"success": False, "message": "Habit exists!"})
     else: 
-        habits.insert(request.form.to_dict())
+        habits.insert(received.to_dict())
         return jsonify({"success": True, "message": "Habit added!"})
 
 #remove a habit
@@ -68,16 +71,29 @@ def finish_habit():
 
 @app.route('/login', methods= ["POST"])
 def login():
-    recieved = literal_eval(request.data)
+    received = literal_eval(request.data)
     users = mongo.db.users
-    auth = authenticate(recieved['name'], recieved['password'])
+    auth = authenticate(received['name'], received['password'])
     if not auth:
         return jsonify({"success": False, "message": "Invalid Name/Password."})
     else:
-        user =users.find_one({"password": m(recieved['name']+recieved['password']).hexdigest()})
-        return jsonify({"success": True, "data":user})
+        habits = mongo.db[received['name']]
+        user =users.find_one({"password": m(received['name']+received['password']).hexdigest()})
 
+        return jsonify({"success": True, "user":user, "habits":habits})
 
+@app.route('/update', methods=["POST"])
+def update():
+    received =  request.form
+    users = mongo.db.users
+    return jsonify({"success":True})
+    find = users.find_one({"name":received['owner']})
+    header("Content-type: json")
+    if find == None:
+        return jsonify({"success":False,"message":"User doesn't exist."})
+    else:
+        users.update({"name":received['owner']}, {"$set":{"habigotchi":request.data}})
+        return jsonify({"success":True})
 
 if __name__ == '__main__':
     app.run()
