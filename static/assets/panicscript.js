@@ -19,6 +19,11 @@ return JSON.parse($.ajax({
 	}).responseText);
 }
 
+
+
+
+
+
 $(document).ready( function() {
 
 	$('input[name=login-button] ').click(function (){ 
@@ -27,6 +32,15 @@ $(document).ready( function() {
 	$('input[name=register-button] ').click(function (){ 
 		sendRequest('POST', '/', {"name":$('input[name=username] ').val(),"number":1112223333,"email":"at@gmail.com", "password":$('input[name=password] ').val()});
 	});
+
+
+
+	/*$('input[name=login-button]').click(function (){ 
+	    $('#loginsignup-container').fadeOut(400);
+	    $('#logo-container').delay(400).fadeOut(800).slideUp(750);
+	});
+	
+	$('background background-image').attr({backgroundPosition: '100px'}, 1000);*/
 
 });
 
