@@ -73,25 +73,21 @@ canvas {
 	bottom: 50%;*/
 /*z-index: 5;*/
 	overflow: hidden;
-	margin: -250px 0 0 -250px;
-	position: absolute;
+	position: fixed;
 }
 
 .canvas {
-	position: absolute;
 	z-index: 4;
 	right: 0;
 }
 
 .canvas1 {
-	position: absolute;
 	z-index: 3;
 	right: 0;
 }
 
 }
 .canvas2 {
-	position: absolute;
 	z-index: 2;
 	right: 0;
 }

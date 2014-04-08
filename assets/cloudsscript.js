@@ -1,12 +1,12 @@
 canvas = document.getElementById("canvas");
 canvasmid = document.getElementById("canvas1");
 canvasback = document.getElementById("canvas2");
-canvas.height = window.outerheight;
-canvas.width = window.outerWidth;
-canvasmid.height = window.outerHeight;
-canvasmid.width = window.outerWidth;
-canvasback.height = window.outerHeight;
-canvasback.width = window.outerWidth;
+canvas.height = window.innerheight;
+canvas.width = window.innerWidth;
+canvasmid.height = window.innerHeight;
+canvasmid.width = window.innerWidth;
+canvasback.height = window.innerHeight;
+canvasback.width = window.innerWidth;
 
 ctx = canvas.getContext("2d");
 ctxMid = canvasmid.getContext("2d");
@@ -235,7 +235,7 @@ function cloudGen(){
 function cloudGenMid(){
     s = Math.round(Math.random()*spdfct+1);
     side = sideCalc(s);
-    game.addCloudMid(side, -300, undefined, s);
+    game.addCloudMid(side, -400, undefined, s);
     setTimeout(cloudGenMid, 2500);
 }
 
