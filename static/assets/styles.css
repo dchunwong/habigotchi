@@ -26,10 +26,11 @@ body {
 	z-index: 1;
 }
 
-
+/*
 .hidden-popup {
     display: none;
 }
+*/
 
 #popup-container {
     margin: 100 auto 100 auto;
@@ -37,6 +38,19 @@ body {
     position: fixed;
     z-index: 20;
     background-color: white;
+}
+
+#login-popup {
+    display: none;
+    width: 100%;
+    /*
+    top: -100%;
+    width: 4000;
+    height: 4000;
+    */
+    position: fixed;
+    z-index: 19;
+    top: 0;
 }
 
 .check-button-wrap {
@@ -48,7 +62,7 @@ body {
     height: 100px;
 }
 
-#invis-click-panel {
+#click-panel {
     display: none;
     background: rgba(0, 0, 0, 0.5);
     width: 100%;
