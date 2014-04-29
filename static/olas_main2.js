@@ -21,7 +21,7 @@ function sendRequest(type, url, data){
 var LoginPopup = function(container) {
     var login = document.createElement('div');
     login.id='login-popup';
-    login.className='hidden-popup';
+    login.className='popup-object';
 
     login.appendChild(textField('Username', 'input-textbox'));
     login.appendChild(document.createElement('br'));
@@ -200,13 +200,13 @@ var submitHabit= function(container, classname, lastElem) {
     return submit;
 };
 
-var killPopup = function(popupObjectId, clickPanelId) {
+var hidePopup = function(popupObjectId, clickPanelId) {
     //$('#'+popupObjectId).delay(800).fadeOut(400, function() { $('#'+popupObjectId).empty(); });
-    console.log( $('#'+popupObjectId));
+    //console.log( $('#'+popupObjectId));
     //$('#'+popupObjectId).delay(800).fadeOut(400);
-    $('#'+clickPanelId).delay(800).fadeOut(400, function() {
-        document.getElementById("login-popup").style.display="none";
-    });
+    console.log("click-panel clicked");
+    $('#'+clickPanelId).delay(800).fadeOut(400);
+    $('#'+popupObjectId).delay(800).fadeOut(400);
 };
 
 // essentially the main method for THE LOGIN POPUP; it runs everything.
@@ -280,19 +280,21 @@ $(document).ready(function() {
 
 $(document).ready( function() {
     var popCont = document.getElementById('popup-container');
-    popCont.appendChild(LoginPopup(popCont));
+    var loginPopupObject = LoginPopup(popCont);
+    popCont.appendChild(loginPopupObject);
     //var container = document.getElementById('modal-container');
     var clickPanel = document.getElementById('click-panel');
     //console.log(clickPanel);
     //console.log(popCont);
-    clickPanel.onclick = function() { killPopup(popCont.id, clickPanel.id); };
+    clickPanel.onclick = function() { hidePopup(loginPopupObject.id, clickPanel.id); };
     //content.style.display='none';
     //content.style.background='rgba(0, 0, 0, 0.5)';
     $("input[name='register-button']").click(function() {
-        console.log('sign up button clicked!');
+        //console.log('sign up button clicked!');
         //console.log($('#login-popup').attr('id'));
-        document.getElementById("login-popup").style.display="block";
+        //document.getElementById("login-popup").style.display="block";
         $('#click-panel').delay(800).fadeIn(400);
+        $('#login-popup').delay(800).fadeIn(400);
         //$('#login-popup').delay(800).fadeIn(400);
     });
 });

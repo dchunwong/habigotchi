@@ -26,11 +26,10 @@ body {
 	z-index: 1;
 }
 
-/*
-.hidden-popup {
-    display: none;
+.popup-object {
+    /*display: none;*/
+    z-index: 21;
 }
-*/
 
 #popup-container {
     margin: 100 auto 100 auto;
@@ -49,7 +48,7 @@ body {
     height: 4000;
     */
     position: fixed;
-    z-index: 19;
+    /*z-index: 19;*/
     top: 0;
 }
 
