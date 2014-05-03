@@ -11,12 +11,29 @@
     z-index: 1;
 }
 
+#click-panel {
+	display: none;
+}
+
 #popup-container {
+	display: none;
     margin: 100 auto 100 auto;
     width: 500px;
     position: relative;
-    z-index: 3;
-    background-color: white;
+    z-index: 20;
+    background: white;
+    height: 200px;
+    width: 200px;
+    margin: 100px auto 0px auto;
+}
+
+#login-popup {
+	position: relative;
+	display: none;
+	padding-top: 20px;
+	width: 140px;
+	height: 120px;
+	margin: 0px auto 0px auto;
 }
 
 .check-button-wrap {
