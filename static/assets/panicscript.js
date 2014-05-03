@@ -9,6 +9,15 @@ response = sendRequest('POST','/login',{"name":name,"password":password});
 	}
 }
 
+function signupexpand(e) {
+    console.log("signupexpand here!");
+    a = $("#loginsignup");
+    a.css("transition", "1s");
+    a.css( "height", "250px" );
+    setTimeout(function(){$( 'input[name=password]' ).after( '<input class="login"  name="email" placeholder="email">' );
+    $( 'input[name=password]' ).after( '<input class="login" name="number" placeholder="phone number">' );},1000);
+}
+
 function sendRequest(type, url, data){
 return JSON.parse($.ajax({
 		type: type,
@@ -19,24 +28,12 @@ return JSON.parse($.ajax({
 	}).responseText);
 }
 
-
-
-
-
-
 $(document).ready( function() {
 
 	$('input[name=login-button] ').click(function (){ 
 		login($('input[name=username] ').val(), $('input[name=password] ').val());
 	});
-	$('input[name=register-button] ').click(function (){ 
-		sendRequest('POST', '/', {"name":$('input[name=username] ').val(),
-			"number":1112223333,
-			"email":"at@gmail.com",
-			"password":$('input[name=password] ').val()});
-	});
-
-
+	$('input[name=register-button] ').click(signupexpand);
 
 	/*$('input[name=login-button]').click(function (){ 
 	    $('#loginsignup-container').fadeOut(400);
