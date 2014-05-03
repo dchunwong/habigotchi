@@ -225,26 +225,54 @@ function animate(){
     requestAnimationFrame(animate);
 }
 
+window.onblur = function() {window.blurred = true;};
+window.onfocus = function() {window.blurred = false;};
+
+(function() {
+
 function cloudGen(){
     s = Math.round(Math.random()*spdfct+1);
     side = sideCalc(s);
-    game.addCloudFore(side, -500, undefined, s);
-    setTimeout(cloudGen, 3000);
-}
+    game.addCloudFore(side, -800, undefined, s);
+    /*setTimeout(cloudGen, 3000);*/
+    if (window.blurred) {
+		setTimeout(cloudGenBack, 3000);
+		return;
+	}
+	setTimeout(cloudGenBack, 3000);
+	};
+	setTimeout(cloudGenBack, 3000);
 
-function cloudGenMid(){
+	window.onblur = function() {window.blurred = true;};
+	window.onfocus = function() {window.blurred = false;};
+
+})();
+
+/*function cloudGenMid(){
     s = Math.round(Math.random()*spdfct+1);
     side = sideCalc(s);
-    game.addCloudMid(side, -400, undefined, s);
-    setTimeout(cloudGenMid, 2500);
+    game.addCloudMid(side, -500, undefined, s);
+    /*setTimeout(cloudGenMid, 2500);
+    if (window.blurred) {
+		setTimeout(cloudGenBack, 2500);
+		return;
+	}
+	setTimeout(cloudGenBack, 2500);
+
 }
 
 function cloudGenBack(){
     s = Math.round(Math.random()*spdfct+1);
     side = sideCalc(s);
     game.addCloudBack(side, -200, undefined, s);
-    setTimeout(cloudGenBack, 2000);
-}
+    if (window.blurred) {
+		setTimeout(cloudGenBack, 2000);
+		return;
+	}
+	setTimeout(cloudGenBack, 2000);
+
+
+}*/
 
 
 
@@ -276,9 +304,20 @@ window.onblue = function(){
 }
 
 setInterval(function () {
-	console.log(window.isActive ? 'active' : 'inactive')}, 1000);
+	console.log(window.isActive ? 'active' : 'inactive')}, 1);
+
+
+/*should fix stacking problem of clouds*/
+function stopTimeout(myFunction) {
+
+	function myFunction() {
+		
+	}
+
+}
+
 
 animate();
-cloudGen();
-cloudGenMid();
-cloudGenBack();
+/*cloudGen();*/
+/*cloudGenMid();
+cloudGenBack();*/
