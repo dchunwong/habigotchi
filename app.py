@@ -5,6 +5,7 @@ import json
 import pymongo
 from bson.json_util import dumps
 import hashlib
+import datetime
 
 #end authentication
 app = Flask(__name__)
@@ -53,7 +54,7 @@ def tama_page():
 # New Habits
 @app.route('/new_habit')
 def add_habit():
-    received = literal_eval(request.data)
+    received = request.form
     habits = mongo.db[received['name']]
     check = habits.find_one({"habit":received["habit"]})
     if check != None:
@@ -70,7 +71,22 @@ def remove_habit():
 #finish a habit
 @app.route('/finish_habit')
 def finish_habit():
-    return 'Hello World!'
+    received = request.get_json()
+    habits = mongo.db[received['name']]
+    check = habits.find_one({"habit":received["habit"]})
+    if check == None:
+        return jsonify({"success": False, "message": "Habit does not exist!"})
+    else:
+        if check.done:
+            return jsonify({"success": False, "message": "Habit Checked already."})
+        today = datetime.date.today()
+        if check.type == "W":
+            week = today+datetime.timedelta(days=-today.weekday())
+            habits.update({"habit":received["habit"]}, {"$set":{"done":str(week)}})
+        else:
+            habits.update({"habit":received["habit"]}, {"$set":{"done":str(today)}})
+
+        return jsonify({"success":True})
 
 @app.route('/login', methods= ["POST"])
 def login():
@@ -83,14 +99,17 @@ def login():
         habits = mongo.db[received['name']]
         user =users.find_one({"password": m(received['name']+received['password']).hexdigest()})
         all_habits = habits.find()
-        habits_list = [dumps(all_habits[i]) for i in range(all_habits.count())] 
+        for habit in all_habits:
+            if check_habit(habit) != 1:
+                habit.done = None
+        habits_list = [dumps(habit) for habit in all_habits]
+
         return jsonify({"success": True, "user":dumps(user), "habits":habits_list})
 
 @app.route('/update', methods=["POST"])
 def update():
     received =  request.form
     users = mongo.db.users
-    return jsonify({"success":True})
     find = users.find_one({"name":received['owner']})
     header("Content-type: json")
     if find == None:
@@ -98,6 +117,27 @@ def update():
     else:
         users.update({"name":received['owner']}, {"$set":{"habigotchi":request.data}})
         return jsonify({"success":True})
+
+# Helper functions
+
+def check_habit(habit):
+    today = datetime.date.today()
+    week = today + datetime.timedelta(days=-today.weekday())
+    done = datetime.datetime.strptime(str(habit.done), "%Y-%m-%d")
+    if habit.type == "W":
+        if week - done > datetime.timedelta(14):
+            return -1
+        elif week - done >= datetime.timedelta(7):
+            return 0
+        else:
+            return 1
+    elif habit.type == "D":
+        if today - done >= datetime.timedelta(2):
+            return -1
+        elif today - done == datetime.timedelta(1):
+            return 0
+        else:
+            return 1
 
 if __name__ == '__main__':
     app.run()
