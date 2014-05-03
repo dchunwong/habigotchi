@@ -51,9 +51,10 @@ def tama_page():
     return render_template('main.html')
 
 # New Habits
-@app.route('/new_habit')
+@app.route('/new_habit', methods=['POST'])
 def add_habit():
-    received = literal_eval(request.data)
+    #received = literal_eval(request.data)
+    received = request.form
     habits = mongo.db[received['name']]
     check = habits.find_one({"habit":received["habit"]})
     if check != None:
