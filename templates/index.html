@@ -103,16 +103,31 @@
 			    </div>
 			    <div id="stats-stats-container">
 				<div id="stats-hp-container">
-				    <div id="stats-hp">
-					<div id="stats-hp-name">HP</div>
-					<div id="stats-hp-amount">100</div>
-					<div id="stats-hp-name">/</div>
-					<div id="stats-hp-max">100</div>
-				    </div>
+				    <div id="stats-hp-barbase">
+					<!-- #stats-hp-bar width percentage controls how much hp the habigotchi has" -->
+					<div id="stats-hp-bar">
+					    <div id="stats-hp">
+						<div id="stats-hp-name">HP</div>
+						<div id="stats-hp-amount">100</div>
+						<div id="stats-hp-slash">/</div>
+						<div id="stats-hp-max">100</div>
+					    </div>
+					</div>
+			            </div>
+
 				</div>
 				<div id="stats-exp-container">
-				    <div id="stats-exp">
-				    </div>
+				    <div id="stats-exp-barbase">
+					<!-- #stats-exp-bar width percentage controls how much exp shows -->
+					<div id="stats-exp-bar">
+					    <div id="stats-exp">
+						<div id="stats-exp-name">EXP</div>
+						<div id="stats-exp-amount">20</div>
+						<div id="stats-exp-slash">/</div>
+						<div id="stats-exp-max">20</div>
+					    </div>
+					</div>
+			     	    </div>
 				</div>
 			    </div>
 			</div>
@@ -122,9 +137,23 @@
 
 
 			<div class="wrapper"> <!--pushes footer to bottom-->
-			<div class="push"></div>
-			<div id = "mogotchi-container">
+			    <div class="push"></div>
 			</div>
+			<div id = "mogotchi-container">
+			    <div id="mogatchi">
+
+				<!-- change dimensions to match dimensions of the sprite / gif-->
+				<div id="mogatchi-sprite-container">
+				    <!--put gif in #mogotchi-sprite -->
+				    <div id="mogatchi-sprite">
+					<img src="static/assets/mogotchi-jump.gif">
+					</div>
+				</div>
+			    </div>
+			    <div id="light-green"></div>
+			    <div id="med-green"></div>
+			    <div id="dark-green"></div>
+				</div>
 			</div>
 		</div>
 		<!--end main page-->
