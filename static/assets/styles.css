@@ -507,3 +507,7 @@ input[name=register-button] {
 	height: 100%;
 /*	background: white;	*/
 }
+
+#habit-check-delete-container {
+    display: none;
+}
