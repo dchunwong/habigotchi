@@ -9,7 +9,8 @@ var fadeOutTime = 400,
     delayTime = 100,
     popupObjectId,
     clickPanelId,
-    popupContainerId;
+    popupContainerId,
+    habitsContainerId;
 
 var user;
 var habits;
@@ -74,6 +75,7 @@ function login(name, password) {
             //console.log("login successful!");
             user = response.user;
             habits = response.habits;
+            PopulateHabitList(document.getElementById(habitsContainerId), habits);
         }
     });
 }
@@ -125,10 +127,11 @@ var submitButton = function(container, classname) {
 };
 
 // habitlist wrapper field
-var HabitListPopup = function(container, habitList) {
-    var habits = document.createElement('div');
-    habits.id='habitsPopup';
-    habits.className='hidden-popup';
+//function PopulateHabitList(container, habitList) 
+function PopulateHabitList(habitsListContainer, habitList) {
+    //var habits = document.createElement('div');
+    //habits.id='habitsPopup';
+    //habits.className='hidden-popup';
 
     /*
     signup.appendChild(textField('Mobile Number', 'input-textbox'));
@@ -136,14 +139,19 @@ var HabitListPopup = function(container, habitList) {
     signup.appendChild(submitButton('signupPopup', 'input-textbox' ));
     */
     
+    /* ################ BEGIN FILLER TESTCODE ################ */
+    habitList = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
+    // dont forget to also clear out the filler functioncall in the main!
+    /* ################ END FILLER TESTCODE ################ */
+
     habitList.forEach(function(elem) {
         //console.log('hiberfore');
-        habits.appendChild(habitEntry(elem));
+        habitsListContainer.appendChild(habitEntry(elem));
         //console.log('hiafter');
     });
-    habits.appendChild(newHabit(habits.id));
+    //habitsListContainer.appendChild(newHabit(habitsListContainer.id));
 
-    return habits;
+    //return habitsListContainer;
 };
 
 // entryData is an object that contains an entire entry
@@ -170,15 +178,18 @@ var habitEntry = function(entryData) {
 
 // where you would enter in a new habit to add to the list
 // takes in the master habit list, to add new habits to
-var newHabit = function(habitsId) {
-    var newHab = document.createElement('div');
+var newHabitPopup = function(habitsId) {
+    console.log("popuplating newhabit popup");
+    var newHab = document.createElement('form');
+    newHab.id = "new-habit-popup";
 
     newHab.appendChild(textField('Habit', 'input-habit-field'));
     newHab.appendChild(textField('Rank (1-5)', 'input-habit-field'));
     newHab.appendChild(textField('Freq (D or W)', 'input-habit-field'));
     newHab.appendChild(textField('Description', 'input-habit-field'));
     newHab.appendChild(textField('Deadline', 'input-habit-field'));
-    newHab.appendChild(submitHabit(habitsId, 'input-habit-field', newHab));
+    //newHab.appendChild(submitHabit(habitsId, 'input-habit-field', newHab));
+    newHab.appendChild(submitHabit(habitsId, 'input-habit-field'));
 
 
     /*######## SEND AJAX to add to database #######*/
@@ -189,7 +200,7 @@ var newHabit = function(habitsId) {
 // submit button for new habit
 // container id
 // classname is the class to target
-var submitHabit= function(container, classname, lastElem) {
+var submitHabit = function(containerId, classname) {
     var submit = document.createElement('button');
 
     /*######## SUPER DUMMY VARIABLE USER used in jsonlist ##########*/
@@ -215,10 +226,13 @@ var submitHabit= function(container, classname, lastElem) {
         };
 
         var TrialHabitEntry = habitEntry(jsonlist);
-        document.getElementById(container).insertBefore(TrialHabitEntry, lastElem);
+        //document.getElementById(containerId).insertBefore(TrialHabitEntry, lastElem);
+        document.getElementById(containerId).appendChild(TrialHabitEntry);
         //console.log(jsonlist);
         /*############# SEND AJAX REQUEST HERE to give dylan data ##############*/
         
+        sendNewHabit(jsonlist, classname);
+        /*
         var jsonResponse = sendRequest("POST", "/new_habit", jsonlist);
         //console.log(jsonResponse)
         if (jsonResponse.success == true) {
@@ -229,9 +243,25 @@ var submitHabit= function(container, classname, lastElem) {
         } else {
             $('.habit-entry-wrap').remove();
         }
+        */
         
     };
     return submit;
+};
+
+function sendNewHabit(jsonlist, fieldclassname) {
+    return $.post('/new_habit', jsonlist).then(function(response) {
+        console.log("promise made!");
+        if (response.success) {
+            $("." + fieldclassname).each(function() {
+                //console.log($(this).val());
+                $(this).val('');
+            });
+        } else {
+            console.log("invalid habit form!");
+            //$('.habit-entry-wrap').remove();
+        }
+    });
 };
 
 var hidePopup = function(popupObjectId, clickPanelId, popupContainerId) {
@@ -244,84 +274,19 @@ var hidePopup = function(popupObjectId, clickPanelId, popupContainerId) {
     $('#'+popupContainerId).delay(delayTime).fadeOut(fadeOutTime);
 };
 
-// essentially the main method for THE LOGIN POPUP; it runs everything.
-// when you need to bind all this into a button, just rip this function
-// out of the $().ready and bind it to a button or something.
-/*
-$(document).ready(function() {
-    var popCont = document.getElementById('popup-container');
-    popCont.appendChild(LoginPopup(popCont));
-    var content = document.getElementById('content');
-    var killerInvis = document.createElement('div');
-    content.appendChild(killerInvis);
-    killerInvis.id = 'invis-click-panel';
-    killerInvis.onclick = function() { killPopup(content.id, popCont.id); };
-    //content.style.display='none';
-    //content.style.background='rgba(0, 0, 0, 0.5)';
-    $('#invis-click-panel').delay(800).fadeIn(400);
-    $('.hidden-popup').delay(800).fadeIn(400);
-});
-*/
-
-// essentially the main method for THE HABITLIST POPUP; it runs everything.
-// when you need to bind all this into a button, just rip this function
-// out of the $().ready and bind it to a button or something.
-/*$(document).ready(function() {
-    console.log("fucking work please");
-    var popCont = document.getElementById('popup-container');
-
-    // GET HABITLIST (LIST OF OBJECTS) 
-
-    //var habitList = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
-    var habits = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
-    var content = document.getElementById('content');
-    var killerInvis = document.createElement('div');
-    content.appendChild(killerInvis);
-    popCont.appendChild(HabitListPopup(popCont, habits));
-    //content.appendChild(killerInvis);
-    killerInvis.id = 'invis-click-panel';
-    //killerInvis.style.display='none';
-    //killerInvis.style.background='rgba(0, 0, 0, 0.5)';
-    killerInvis.onclick = function() { killPopup(content.id, popCont.id); };
-    //$('#content').delay(800).fadeIn(400);
-    $('#invis-click-panel').delay(800).fadeIn(400);
-    $('.hidden-popup').delay(800).fadeIn(400);
-});*/
-
-/*$("input[name='register-button']").click(function() {*/
-
-/*$("#logo-container").click(function() {
-
-    var popCont = document.getElementById('popup-container');
-    console.log("meowmeow");
-
-    // GET HABITLIST (LIST OF OBJECTS) 
-
-    //var habitList = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
-    var habits = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
-    var content = document.getElementById('content');
-    var killerInvis = document.createElement('div');
-    content.appendChild(killerInvis);
-    popCont.appendChild(HabitListPopup(popCont, habits));
-    //content.appendChild(killerInvis);
-    killerInvis.id = 'invis-click-panel';
-    //killerInvis.style.display='none';
-    //killerInvis.style.background='rgba(0, 0, 0, 0.5)';
-    killerInvis.onclick = function() { killPopup(content.id, popCont.id); };
-    //$('#content').delay(800).fadeIn(400);
-    $('#invis-click-panel').delay(800).fadeIn(400);
-    $('.hidden-popup').delay(800).fadeIn(400);
-});*/
 
 $(document).ready( function() {
     var popCont = document.getElementById('popup-container');
     var signupPopupObject = SignupPopup(popCont);
+    var newHabitPopupObject = newHabitPopup('habit-list');
     popCont.appendChild(signupPopupObject);
+    popCont.appendChild(newHabitPopupObject);
     //var container = document.getElementById('modal-container');
     var clickPanel = document.getElementById('click-panel');
     popupObjectId = signupPopupObject.id;
     clickPanelId = clickPanel.id;
     popupContainerId = 'popup-container';
+    habitsContainerId = 'habit-list';
     //console.log(clickPanel);
     //console.log(popCont);
     clickPanel.onclick = function() { hidePopup(popupObjectId, clickPanelId, popupContainerId); };
@@ -344,5 +309,15 @@ $(document).ready( function() {
         $('#signup-popup').delay(delayTime).fadeIn(fadeInTime);
         //$('#signup-popup').delay(800).fadeIn(400);
     });
+
+    document.getElementById("habit-add-task-button").onclick = function () {
+        $('#click-panel').delay(delayTime).fadeIn(fadeInTime);
+        $('#popup-container').delay(delayTime).fadeIn(fadeInTime);
+        $('#new-habit-popup').delay(delayTime).fadeIn(fadeInTime);
+    };
+
+    /*############# BEGIN FILLER TESTCODE ##############*/
+    PopulateHabitList(document.getElementById(habitsContainerId), habits);
+    /*############# END FILLER TESTCODE ##############*/
 });
 
