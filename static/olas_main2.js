@@ -51,14 +51,9 @@ function login(name, password){
     }
 }
 */
-function login() {
-    throw("error");
-    console.log("loggin in");
-    var list = [],
-        jsonlist,
-        username,
-        password;
-    console.log(document.getElementByName("username")[0].value);
+function login(name, password) {
+    //console.log("loggin in");
+    //console.log(document.getElementByName("username")[0].value);
     //$("input[name='login-button']").click(function() {
     /*
     $("." + classname).each(function() {
@@ -67,12 +62,16 @@ function login() {
     });
     */
     //console.log(list);
-    jsonlist = {"name": list[0], "password": list[1], "email": list[2], "number": list[3] };
-    console.log("before post");
-
+    //jsonlist = {"name": list[0], "password": list[1], "email": list[2], "number": list[3] };
+    //console.log("name: " + name + ", pass: " + password);
+    if (name == "" || password == "") {
+        console.log("invalid input");
+        return;
+    }
     return $.post('/login', {"name":name,"password":password}).then(function(response) {
-        console.log("promises made");
+        //console.log("promises made");
         if (response.success) {
+            //console.log("login successful!");
             user = response.user;
             habits = response.habits;
         }
@@ -326,11 +325,13 @@ $(document).ready( function() {
     //console.log(clickPanel);
     //console.log(popCont);
     clickPanel.onclick = function() { hidePopup(popupObjectId, clickPanelId, popupContainerId); };
-    $("#login").on("submit", function(e) {
+    $("#login").submit(function(e) {
+        //alert('here');
         e.preventDefault();
         var username = $("input[name='username']").val(),
             password = $("input[name='password']").val();
         login(username, password);
+        return false;
     });
     //content.style.display='none';
     //content.style.background='rgba(0, 0, 0, 0.5)';
