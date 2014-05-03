@@ -158,17 +158,21 @@ function PopulateHabitList(habitsListContainer, habitList) {
 var habitEntry = function(entryData) {
     var divWrap = document.createElement('div');
     var butWrap = document.createElement('span');
+    var checkCover = document.createElement('label');
     var checkBut = document.createElement('input');
     var header = document.createElement('div');
     var descrip = document.createElement('div');
     checkBut.type="checkbox";
     checkBut.className="list-item-checkbox";
+    checkCover.htmlFor = "toggle-1";
+    checkCover.className="checkbox-cover";
     butWrap.className="check-button-wrap";
     divWrap.className="habit-entry-wrap";
     //console.log(entryData);
     header.innerHTML=entryData['habit']+"-"+entryData['rank']+"-"+entryData['deadline'];
     descrip.innerHTML=entryData['description'];
 
+    butWrap.appendChild(checkCover);
     butWrap.appendChild(checkBut);
     divWrap.appendChild(butWrap);
     divWrap.appendChild(header);
