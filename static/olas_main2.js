@@ -162,6 +162,7 @@ var habitEntry = function(entryData) {
     var header = document.createElement('div');
     var descrip = document.createElement('div');
     checkBut.type="checkbox";
+    checkBut.className="list-item-checkbox";
     butWrap.className="check-button-wrap";
     divWrap.className="habit-entry-wrap";
     //console.log(entryData);
@@ -225,13 +226,15 @@ var submitHabit = function(containerId, classname) {
                 , 'name': user.name
         };
 
-        var TrialHabitEntry = habitEntry(jsonlist);
+        var trialHabitEntry = habitEntry(jsonlist);
         //document.getElementById(containerId).insertBefore(TrialHabitEntry, lastElem);
-        document.getElementById(containerId).appendChild(TrialHabitEntry);
+        document.getElementById(containerId).appendChild(trialHabitEntry);
         //console.log(jsonlist);
         /*############# SEND AJAX REQUEST HERE to give dylan data ##############*/
         
-        sendNewHabit(jsonlist, classname);
+        sendNewHabit(jsonlist, classname, function() {
+            document.getElementById(containerId).removeChild(trialHabitEntry);
+        });
         /*
         var jsonResponse = sendRequest("POST", "/new_habit", jsonlist);
         //console.log(jsonResponse)
@@ -249,7 +252,7 @@ var submitHabit = function(containerId, classname) {
     return submit;
 };
 
-function sendNewHabit(jsonlist, fieldclassname) {
+function sendNewHabit(jsonlist, fieldclassname, removeTrialEntry) {
     return $.post('/new_habit', jsonlist).then(function(response) {
         console.log("promise made!");
         if (response.success) {
@@ -258,7 +261,8 @@ function sendNewHabit(jsonlist, fieldclassname) {
                 $(this).val('');
             });
         } else {
-            console.log("invalid habit form!");
+            console.log("invalid habit form! removing!");
+            removeTrialEntry();
             //$('.habit-entry-wrap').remove();
         }
     });
