@@ -10,6 +10,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,700italic,400,700,300' rel='stylesheet' type='text/css'>
     <!-- <script src="static/olas_main.js"></script> -->
     <script src="static/olas_main2.js"></script>
+    <script src="static/assets/panicscript.js"></script>
 
 	<link href='http://fonts.googleapis.com/css?family=Maven+Pro:500' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Englebert' rel='stylesheet' type='text/css'>
@@ -54,13 +55,13 @@
 						<br><button type="button" name="signup-button" type="button">start</button>
 					</div>-->
 
-					<form method="post" action="/foo" id = "login">
+					<div id = "login">
 						Log In
 						<input name="username" placeholder ="username">
 						<input type= "password" name="password" placeholder ="password">
 						<br><input name="login-button" value="sign in" type="submit">
 						<input name="register-button" value="sign up" type = "submit">
-					</form>
+					</div>
 				</div>
 
 			</div>
@@ -100,15 +101,59 @@
 				<div id="stats-LV-level">1</div>
 
 			    </div>
+			    <div id="stats-stats-container">
+				<div id="stats-hp-container">
+				    <div id="stats-hp-barbase">
+					<!-- #stats-hp-bar width percentage controls how much hp the habigotchi has" -->
+					<div id="stats-hp-bar">
+					    <div id="stats-hp">
+						<div id="stats-hp-name">HP</div>
+						<div id="stats-hp-amount">100</div>
+						<div id="stats-hp-slash">/</div>
+						<div id="stats-hp-max">100</div>
+					    </div>
+					</div>
+			            </div>
+
+				</div>
+				<div id="stats-exp-container">
+				    <div id="stats-exp-barbase">
+					<!-- #stats-exp-bar width percentage controls how much exp shows -->
+					<div id="stats-exp-bar">
+					    <div id="stats-exp">
+						<div id="stats-exp-name">EXP</div>
+						<div id="stats-exp-amount">20</div>
+						<div id="stats-exp-slash">/</div>
+						<div id="stats-exp-max">20</div>
+					    </div>
+					</div>
+			     	    </div>
+				</div>
+			    </div>
 			</div>
+
 		    </div>
 		</div>
 
 
 			<div class="wrapper"> <!--pushes footer to bottom-->
-			<div class="push"></div>
-			<div id = "mogotchi-container">
+			    <div class="push"></div>
 			</div>
+			<div id = "mogotchi-container">
+			    <div id="mogatchi">
+
+				<!-- change dimensions to match dimensions of the sprite / gif-->
+				<div id="mogatchi-sprite-container">
+				    <!--put gif in #mogotchi-sprite -->
+				    <div id="mogatchi-sprite">
+					<img src="static/assets/mogotchi-jump.gif">
+					</div>
+				</div>
+			    </div>
+			    <div id="light-green"></div>
+			    <div id="med-green"></div>
+			    <div id="dark-green"></div>
+				</div>
 			</div>
 		</div>
 		<!--end main page-->
