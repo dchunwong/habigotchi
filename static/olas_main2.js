@@ -10,7 +10,9 @@ var fadeOutTime = 400,
     popupObjectId,
     clickPanelId,
     popupContainerId,
-    habitsContainerId;
+    habitsContainerId,
+    addHabitButtonId,
+    checkDeleteHabitContainerId;
 
 var user;
 var habits;
@@ -140,7 +142,7 @@ function PopulateHabitList(habitsListContainer, habitList) {
     */
     
     /* ################ BEGIN FILLER TESTCODE ################ */
-    habitList = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}];
+    habitList = [{"habit": "eat", "name": "bob"}, {"habit": "sleep", "name": "jim"}, {"habit": "walk", "name": "tim"}, {"habit": "breathe", "name": "joe"}];
     // dont forget to also clear out the filler functioncall in the main!
     /* ################ END FILLER TESTCODE ################ */
 
@@ -149,6 +151,7 @@ function PopulateHabitList(habitsListContainer, habitList) {
         habitsListContainer.appendChild(habitEntry(elem));
         //console.log('hiafter');
     });
+    bindADCCheckboxAction();
     //habitsListContainer.appendChild(newHabit(habitsListContainer.id));
 
     //return habitsListContainer;
@@ -158,22 +161,61 @@ function PopulateHabitList(habitsListContainer, habitList) {
 var habitEntry = function(entryData) {
     var divWrap = document.createElement('div');
     var butWrap = document.createElement('span');
+    var checkCover = document.createElement('label');
     var checkBut = document.createElement('input');
     var header = document.createElement('div');
     var descrip = document.createElement('div');
     checkBut.type="checkbox";
+    checkBut.className="list-item-checkbox";
+    checkBut.setAttribute("name", "habit-check");
+    checkCover.htmlFor = "toggle-1";
+    checkCover.className="checkbox-cover";
     butWrap.className="check-button-wrap";
     divWrap.className="habit-entry-wrap";
     //console.log(entryData);
     header.innerHTML=entryData['habit']+"-"+entryData['rank']+"-"+entryData['deadline'];
     descrip.innerHTML=entryData['description'];
-
+    //bindADCCheckboxAction();
+    
+    butWrap.appendChild(checkCover);
     butWrap.appendChild(checkBut);
     divWrap.appendChild(butWrap);
     divWrap.appendChild(header);
     divWrap.appendChild(descrip);
 
     return divWrap;
+};
+
+/**
+ * binds action onto onclick for each checkbox
+ * ADCCheckbox stands for Add/Delete/Check Checkbox
+ * this fades in/out Add/(Delete,Check) depending on situation
+ *
+ */
+function bindADCCheckboxAction() {
+    $("input[name='habit-check']").click(function() {
+        console.log("checked!");
+        var checkboxes = document.getElementsByName('habit-check');
+        var checked = false;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checked = true;
+            }
+        }
+        if (checked && document.getElementById(addHabitButtonId).style.display != "none") {
+            // fadeout add, fadein div holding delete/check
+            console.log('fadeout add, fadein div holding delete/check');
+            $("#" + addHabitButtonId).fadeOut(fadeOutTime/2, function() {
+                $("#" + checkDeleteHabitContainerId).fadeIn(fadeInTime/2);
+            });
+        } else if (!checked && document.getElementById(checkDeleteHabitContainerId).style.display != "none") {
+            // fadein add, fadeout div holding delete/check
+            console.log('fadein add, fadeout div holding delete/check');
+            $("#" + checkDeleteHabitContainerId).fadeOut(fadeOutTime/2, function() {
+                $("#" + addHabitButtonId).fadeIn(fadeInTime/2);
+            });
+        }
+    });
 };
 
 // where you would enter in a new habit to add to the list
@@ -225,13 +267,15 @@ var submitHabit = function(containerId, classname) {
                 , 'name': user.name
         };
 
-        var TrialHabitEntry = habitEntry(jsonlist);
+        var trialHabitEntry = habitEntry(jsonlist);
         //document.getElementById(containerId).insertBefore(TrialHabitEntry, lastElem);
-        document.getElementById(containerId).appendChild(TrialHabitEntry);
+        document.getElementById(containerId).appendChild(trialHabitEntry);
         //console.log(jsonlist);
         /*############# SEND AJAX REQUEST HERE to give dylan data ##############*/
         
-        sendNewHabit(jsonlist, classname);
+        sendNewHabit(jsonlist, classname, function() {
+            document.getElementById(containerId).removeChild(trialHabitEntry);
+        });
         /*
         var jsonResponse = sendRequest("POST", "/new_habit", jsonlist);
         //console.log(jsonResponse)
@@ -249,17 +293,52 @@ var submitHabit = function(containerId, classname) {
     return submit;
 };
 
-function sendNewHabit(jsonlist, fieldclassname) {
+function sendNewHabit(jsonlist, fieldclassname, removeTrialEntry) {
     return $.post('/new_habit', jsonlist).then(function(response) {
-        console.log("promise made!");
+        //console.log("promise made!");
         if (response.success) {
             $("." + fieldclassname).each(function() {
                 //console.log($(this).val());
                 $(this).val('');
+                bindADCCheckboxAction();
             });
         } else {
-            console.log("invalid habit form!");
+            console.log("invalid habit form! removing!");
+            removeTrialEntry();
             //$('.habit-entry-wrap').remove();
+        }
+    });
+};
+
+function sendHabitRemoval() {
+    return $.post('/remove_habit', notsurewhattosendhere).then(function(response) {
+        if (response.success) {
+            console.log("habit delete success!");
+            var checkboxes = document.getElementsByName('habit-check');
+            for (var i = checkboxes.length - 1; i >= 0; i--) {
+                if (checkboxes[i].checked) {
+                    console.log(checkboxes[i]);
+                    document.getElementById(habitsContainerId).removeChild(checkboxes[i].parentNode.parentNode);
+                }
+            }
+        } else {
+            console.log("habit delete failed!");
+        }
+    });
+};
+
+function sendHabitCompletion() {
+    return $.post('/finish_habit', notsurewhatotsendhere).then(function(response) {
+        if (response.success) {
+            console.log("habit completion success!");
+            var checkboxes = document.getElementsByName('habit-check');
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    // Do something to finished habits here!
+                }
+            }
+        } else {
+            console.log("habit completion failed!");
         }
     });
 };
@@ -287,6 +366,8 @@ $(document).ready( function() {
     clickPanelId = clickPanel.id;
     popupContainerId = 'popup-container';
     habitsContainerId = 'habit-list';
+    addHabitButtonId = 'habit-add-task-button';
+    checkDeleteHabitContainerId = 'habit-check-delete-container';
     //console.log(clickPanel);
     //console.log(popCont);
     clickPanel.onclick = function() { hidePopup(popupObjectId, clickPanelId, popupContainerId); };
@@ -310,11 +391,18 @@ $(document).ready( function() {
         //$('#signup-popup').delay(800).fadeIn(400);
     });
 
-    document.getElementById("habit-add-task-button").onclick = function () {
+    $("#habit-add-task-button").click(function () {
         $('#click-panel').delay(delayTime).fadeIn(fadeInTime);
         $('#popup-container').delay(delayTime).fadeIn(fadeInTime);
         $('#new-habit-popup').delay(delayTime).fadeIn(fadeInTime);
-    };
+    });
+
+    $("#habit-delete-task-button").click(function() {
+        sendHabitRemoval();
+    });
+    $("#habit-check-task-button").click(function() {
+        sendHabitCompletion();
+    });
 
     /*############# BEGIN FILLER TESTCODE ##############*/
     PopulateHabitList(document.getElementById(habitsContainerId), habits);

@@ -64,7 +64,7 @@ def add_habit():
         return jsonify({"success": True, "message": "Habit added!"})
 
 #remove a habit
-@app.route('/remove_habits')
+@app.route('/remove_habit')
 def remove_habit():
     received = request.get_json()
     habits = mongo.db[received['name']]
