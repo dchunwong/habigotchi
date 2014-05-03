@@ -1,13 +1,15 @@
 // main.js
 
 // takes in the container div
-// creates and puts the login popup in container
+// creates and puts the signup popup in container
 
 
 var fadeOutTime = 400,
     fadeInTime = 400,
-    delayTime = 100;
-
+    delayTime = 100,
+    popupObjectId,
+    clickPanelId,
+    popupContainerId;
 
 var user;
 var habits;
@@ -22,30 +24,59 @@ function sendRequest(type, url, data){
             }).responseText);
 }
 
-var LoginPopup = function(container) {
-    var login = document.createElement('div');
-    login.id='login-popup';
-    login.className='popup-object';
+var SignupPopup = function(container) {
+    var signup = document.createElement('div');
+    signup.id='signup-popup';
+    signup.className='popup-object';
 
-    login.appendChild(textField('Username', 'input-textbox'));
-    login.appendChild(document.createElement('br'));
-    login.appendChild(textField('Password', 'input-textbox'));
-    login.appendChild(document.createElement('br'));
-    login.appendChild(textField('Email', 'input-textbox'));
-    login.appendChild(document.createElement('br'));
-    login.appendChild(textField('Mobile Number', 'input-textbox'));
-    login.appendChild(document.createElement('br'));
-    login.appendChild(submitButton(login.id, 'input-textbox' ));
+    signup.appendChild(textField('Username', 'input-textbox'));
+    signup.appendChild(document.createElement('br'));
+    signup.appendChild(textField('Password', 'input-textbox'));
+    signup.appendChild(document.createElement('br'));
+    signup.appendChild(textField('Email', 'input-textbox'));
+    signup.appendChild(document.createElement('br'));
+    signup.appendChild(textField('Mobile Number', 'input-textbox'));
+    signup.appendChild(document.createElement('br'));
+    signup.appendChild(submitButton(signup.id, 'input-textbox' ));
 
-    return login;
+    return signup;
 };
 
+/*
 function login(name, password){
     response = sendRequest('POST','/login',{"name":name,"password":password});
-    if (response.success){
+    if (response.success == true){
         user = response.user;
         habits = response.habits;
     }
+}
+*/
+function login() {
+    throw("error");
+    console.log("loggin in");
+    var list = [],
+        jsonlist,
+        username,
+        password;
+    console.log(document.getElementByName("username")[0].value);
+    //$("input[name='login-button']").click(function() {
+    /*
+    $("." + classname).each(function() {
+        //console.log($(this).val());
+        list.push($(this).val());
+    });
+    */
+    //console.log(list);
+    jsonlist = {"name": list[0], "password": list[1], "email": list[2], "number": list[3] };
+    console.log("before post");
+
+    return $.post('/login', {"name":name,"password":password}).then(function(response) {
+        console.log("promises made");
+        if (response.success) {
+            user = response.user;
+            habits = response.habits;
+        }
+    });
 }
 
 // all textboxes
@@ -78,14 +109,14 @@ var submitButton = function(container, classname) {
         /*############# SEND AJAX REQUEST HERE to give dylan data ##############*/
         
         var jsonResponse = sendRequest("POST", "/", jsonlist);
-        //console.log(jsonResponse)
+        console.log(jsonResponse)
         if (jsonResponse.success == true) {
-            killPopup('invis-click-panel', container);
-        } else {
-            $("." + classname).each(function() {
-                $(this).val('');
-            });
+            //killPopup('invis-click-panel', container);
+            hidePopup(popupObjectId, clickPanelId, popupContainerId);
         }
+        $("." + classname).each(function() {
+            $(this).val('');
+        });
         /*
         $('#'+container).delay(800).fadeOut(400, function() { $('#'+container).remove(); });
         $('#content').delay(800).fadeOut(400);
@@ -101,9 +132,9 @@ var HabitListPopup = function(container, habitList) {
     habits.className='hidden-popup';
 
     /*
-    login.appendChild(textField('Mobile Number', 'input-textbox'));
-    login.appendChild(document.createElement('br'));
-    login.appendChild(submitButton('loginPopup', 'input-textbox' ));
+    signup.appendChild(textField('Mobile Number', 'input-textbox'));
+    signup.appendChild(document.createElement('br'));
+    signup.appendChild(submitButton('signupPopup', 'input-textbox' ));
     */
     
     habitList.forEach(function(elem) {
@@ -208,7 +239,7 @@ var hidePopup = function(popupObjectId, clickPanelId, popupContainerId) {
     //$('#'+popupObjectId).delay(800).fadeOut(400, function() { $('#'+popupObjectId).empty(); });
     //console.log( $('#'+popupObjectId));
     //$('#'+popupObjectId).delay(800).fadeOut(400);
-    console.log("click-panel clicked");
+    //console.log("click-panel clicked");
     $('#'+clickPanelId).delay(delayTime).fadeOut(fadeOutTime);
     $('#'+popupObjectId).delay(delayTime).fadeOut(fadeOutTime);
     $('#'+popupContainerId).delay(delayTime).fadeOut(fadeOutTime);
@@ -285,23 +316,32 @@ $(document).ready(function() {
 
 $(document).ready( function() {
     var popCont = document.getElementById('popup-container');
-    var loginPopupObject = LoginPopup(popCont);
-    popCont.appendChild(loginPopupObject);
+    var signupPopupObject = SignupPopup(popCont);
+    popCont.appendChild(signupPopupObject);
     //var container = document.getElementById('modal-container');
     var clickPanel = document.getElementById('click-panel');
+    popupObjectId = signupPopupObject.id;
+    clickPanelId = clickPanel.id;
+    popupContainerId = 'popup-container';
     //console.log(clickPanel);
     //console.log(popCont);
-    clickPanel.onclick = function() { hidePopup(loginPopupObject.id, clickPanel.id, 'popup-container'); };
+    clickPanel.onclick = function() { hidePopup(popupObjectId, clickPanelId, popupContainerId); };
+    $("#login").on("submit", function(e) {
+        e.preventDefault();
+        var username = $("input[name='username']").val(),
+            password = $("input[name='password']").val();
+        login(username, password);
+    });
     //content.style.display='none';
     //content.style.background='rgba(0, 0, 0, 0.5)';
     $("input[name='register-button']").click(function() {
         //console.log('sign up button clicked!');
-        //console.log($('#login-popup').attr('id'));
-        //document.getElementById("login-popup").style.display="block";
+        //console.log($('#signup-popup').attr('id'));
+        //document.getElementById("signup-popup").style.display="block";
         $('#click-panel').delay(delayTime).fadeIn(fadeInTime);
-	$('#popup-container').delay(delayTime).fadeIn(fadeInTime);
-        $('#login-popup').delay(delayTime).fadeIn(fadeInTime);
-        //$('#login-popup').delay(800).fadeIn(400);
+        $('#popup-container').delay(delayTime).fadeIn(fadeInTime);
+        $('#signup-popup').delay(delayTime).fadeIn(fadeInTime);
+        //$('#signup-popup').delay(800).fadeIn(400);
     });
 });
 

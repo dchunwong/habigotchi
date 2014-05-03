@@ -27,7 +27,9 @@ def authenticate(user, pw):
 def landing():
     if request.method == 'POST':
         users = mongo.db.users
+        print("request: " + request.form['name'])
         check = users.find_one({"name":request.form['name']})
+        #print(check)
         if check != None:
             return jsonify({"success": False,"message":"Name taken."})
         else:
