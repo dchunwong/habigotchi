@@ -204,7 +204,7 @@ var hidePopup = function(popupObjectId, clickPanelId) {
     //$('#'+popupObjectId).delay(800).fadeOut(400, function() { $('#'+popupObjectId).empty(); });
     //console.log( $('#'+popupObjectId));
     //$('#'+popupObjectId).delay(800).fadeOut(400);
-    console.log("click-panel clicked");
+    //console.log("click-panel clicked");
     $('#'+clickPanelId).delay(800).fadeOut(400);
     $('#'+popupObjectId).delay(800).fadeOut(400);
 };
